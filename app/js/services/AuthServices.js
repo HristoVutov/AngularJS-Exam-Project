@@ -37,11 +37,39 @@ angular.module('issueTrackingSystem.services.auth', [])
                  return deferred.promise;     
             }
             
+            function GetCurrentUser() {
+                 var deferred = $q.defer();                
+                     
+                $http.get(BASE_URL + 'Users/me', 
+                     { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
+                        .then(function (result) {
+                            deferred.resolve(result.data);
+                        },function (err) {
+                            deferred.reject(err);
+                        })
+                 return deferred.promise;     
+            }
+            
+            function GetAllUsers() {
+                 var deferred = $q.defer();                
+                     
+                $http.get(BASE_URL + 'Users', 
+                     { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
+                        .then(function (result) {
+                            deferred.resolve(result.data);
+                        },function (err) {
+                            deferred.reject(err);
+                        })
+                 return deferred.promise;     
+            }
+            
             
             
             return {
                 Register: Register,
-                Login: Login
+                Login: Login,
+                GetCurrentUser: GetCurrentUser,
+                GetAllUsers: GetAllUsers
             }
         }
     ]);

@@ -47,14 +47,26 @@ angular.module('issueTrackingSystem.services.project', [])
                 return deferred.promise;
             }
             
-         
+            function EditProjectById(Id, Data) {
+                
+                $http.put(BASE_URL + 'Projects/' + Id, Data,
+                     { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
+                        .then(function (result) {
+                            deferred.resolve(result.data);
+                        },function (err) {
+                            deferred.reject(err);
+                        })
+                
+                return deferred.promise;
+            }
             
             
             
             return {
                 GetAllProjects: GetAllProjects,
                 GetProjectById: GetProjectById,
-                GetIssuesByProjectId: GetIssuesByProjectId
+                GetIssuesByProjectId: GetIssuesByProjectId,
+                EditProjectById: EditProjectById
             }
         }
     ]);

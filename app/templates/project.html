@@ -1,5 +1,5 @@
 
-<div>
+<div ng-cloak>
     <div class="bs-example bs-example-bg-classes">
         <p class="bg-primary">Project Page</p>
     </div>        
@@ -7,8 +7,8 @@
         <div class="col-xs-5">
             <div class="row">
                 <b>{{Project.ProjectKey}}</b>
-                <input class="btn btn-success" type="button" value="Edit">
-                <input class="btn btn-success" type="button" value="Add Issue">
+                <input  ng-click="Redirect('#/project/' + Project.Id + '/edit')" class="btn btn-success" ng-disabled="CurrentUserId!=Project.Lead.Id" type="button" value="Edit">
+                <input class="btn btn-success" ng-disabled="CurrentUserId!=Project.Lead.Id" type="button" value="Add Issue">
             </div>
             <div class="row">
                 <p>Project Key: {{Project.ProjectKey}}</p>
@@ -25,13 +25,13 @@
                 <label for="LeadId">LeadId: </label>
                     (current id: {{Project.Lead.Id}})
                     <input type="text" id="LeadId " ng-model="Project.Lead.Username">               
-            </div>            
+            </div>   
             <div class="row">
-                <p>Labels: {{loopLabels(Project.Labels)}}</p>
-            </div>
+                <p>Labels: {{loopData(Project.Labels)}}</p>      
+            </div>    
             <div class="row">
-                <p>Priorities: {{loopLabels(Project.Priorities)}}</p>
-            </div>
+                <p>Priorities: {{loopData(Project.Priorities)}}</p>      
+            </div>   
         </div>
         <div class="col-xs-5">
             <div>

@@ -33,13 +33,28 @@ angular.module('issueTrackingSystem.services.project', [])
                 return deferred.promise;
             }
             
+            function GetIssuesByProjectId(Id) {
+                 var deferred = $q.defer();
+                
+                $http.get(BASE_URL + 'Projects/' + Id + '/Issues', 
+                     { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
+                        .then(function (result) {
+                            deferred.resolve(result.data);
+                        },function (err) {
+                            deferred.reject(err);
+                        })
+                
+                return deferred.promise;
+            }
+            
          
             
             
             
             return {
                 GetAllProjects: GetAllProjects,
-                GetProjectById: GetProjectById
+                GetProjectById: GetProjectById,
+                GetIssuesByProjectId: GetIssuesByProjectId
             }
         }
     ]);

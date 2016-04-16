@@ -19,8 +19,22 @@ angular.module('issueTrackingSystem.services.issue', [])
                 return deferred.promise;
             }
             
+            function PostIssue(Data) {
+                
+                $http.post(BASE_URL + 'Issues', Data,
+                     { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
+                        .then(function (result) {
+                            deferred.resolve(result.data);
+                        },function (err) {
+                            deferred.reject(err);
+                        })
+                
+                return deferred.promise;
+            }
+            
             return {
-                GetMyIssues: GetMyIssues
+                GetMyIssues: GetMyIssues,
+                PostIssue: PostIssue
             }
         }
     ]);

@@ -9,6 +9,7 @@ angular.module('issueTrackingSystem', [
   'issueTrackingSystem.controllers.project',
   'issueTrackingSystem.controllers.editProject',
   'issueTrackingSystem.controllers.dashboard',
+  'issueTrackingSystem.controllers.addIssue',
   'issueTrackingSystem.version'
 ])
   .config(['$routeProvider', function($routeProvider) {

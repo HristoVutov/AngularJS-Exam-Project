@@ -19,6 +19,20 @@ angular.module('issueTrackingSystem.controllers.dashboard', [
         function DashboardController($scope, $routeParams, ProjectServices, IssueServices) {
             var projectIdArray = [];
             var projects = [];
+            $scope.Projects = [];
+            ProjectServices.GetAllProjects()
+                .then(function (success) {
+                    var projects = [];
+                    projects = success;
+                    projects = projects.filter(isCurrentUsersProject)
+                    $scope.Projects = projects;
+                });
+            
+            function isCurrentUsersProject(element) {
+                var result = element.Lead.Username == sessionStorage['CurrentUser'];
+                //console.log(result, element);
+                return result;
+            }
             
             IssueServices.GetMyIssues($routeParams.id)
                 .then(function(success){
@@ -28,11 +42,10 @@ angular.module('issueTrackingSystem.controllers.dashboard', [
                             projectIdArray.push(element.Project.Id);
                             ProjectServices.GetProjectById(element.Project.Id)
                                 .then(function (project) {
-                                    projects.push(project);
+                                    $scope.Projects.push(project);
                                 });
                         }
                    }, this);
-                   $scope.Projects = projects;
                 });
                 
             

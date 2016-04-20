@@ -8,7 +8,8 @@ angular.module('issueTrackingSystem', [
   'issueTrackingSystem.controllers.register',  
   'issueTrackingSystem.controllers.project',
   'issueTrackingSystem.controllers.editProject',
-  'issueTrackingSystem.controllers.dashboard',
+  'issueTrackingSystem.controllers.dashboard',  
+  'issueTrackingSystem.controllers.issue',
   'issueTrackingSystem.controllers.addIssue',
   'issueTrackingSystem.version'
 ])

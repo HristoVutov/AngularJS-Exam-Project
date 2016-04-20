@@ -26,11 +26,11 @@ angular.module('issueTrackingSystem.controllers.dashboard', [
                     projects = success;
                     projects = projects.filter(isCurrentUsersProject)
                     $scope.Projects = projects;
+                    console.log(success);
                 });
             
             function isCurrentUsersProject(element) {
                 var result = element.Lead.Username == sessionStorage['CurrentUser'];
-                //console.log(result, element);
                 return result;
             }
             

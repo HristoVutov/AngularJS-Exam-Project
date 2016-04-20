@@ -6,7 +6,7 @@ angular.module('issueTrackingSystem.controllers.issue', [
     'issueTrackingSystem.services.project'    
 ])
     .config(['$routeProvider', function($routeProvider){
-        $routeProvider.when('/issue', {
+        $routeProvider.when('/issue/:id', {
             templateUrl: 'app/templates/issue.html',
             controller: 'IssueController'
         })
@@ -18,8 +18,34 @@ angular.module('issueTrackingSystem.controllers.issue', [
         'IssueServices',
         'AuthServices',
         'ProjectServices',
-        function IssueController(scope, $routeParams, $window, IssueServices, AuthServices, ProjectServices){
-            
+        function IssueController($scope, $routeParams, $window, IssueServices, AuthServices, ProjectServices){
+                IssueServices.GetIssueById($routeParams.id)
+                    .then(function (success) {
+                        $scope.Issue = success;
+                    });
+                    
+                IssueServices.GetCommentsByIssueId($routeParams.id)
+                    .then(function (success) {
+                        $scope.Comments = success;
+                    }, function (error) {
+                        console.log(error);
+                    });
+                
+                AuthServices.GetCurrentUser()
+                .then(function (success) {
+                    $scope.CurrentUserId = success.Id;
+                });
+                    
+                $scope.loopData = function (Data) {
+                var result = "";
+                if(Data != undefined){
+                    Data.forEach(function(element) {
+                        result+= element.Name + ', ';
+                    }, this);
+                }
+                result = result.substr(0, result.length-2);
+                return result;
+            }  
         }]
     );
 
@@ -63,6 +89,11 @@ angular.module('issueTrackingSystem.controllers.addIssue', [
             AuthServices.GetAllUsers()
                 .then(function (success) {
                     $scope.Users = success;
+                });
+                
+            AuthServices.GetCurrentUser()
+                .then(function (success) {
+                    $scope.CurrentUserId = success.Id;
                 });
                 
              $scope.loopData = function (Data) {

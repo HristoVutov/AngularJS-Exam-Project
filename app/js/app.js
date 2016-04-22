@@ -11,9 +11,23 @@ angular.module('issueTrackingSystem', [
   'issueTrackingSystem.controllers.dashboard',  
   'issueTrackingSystem.controllers.issue',
   'issueTrackingSystem.controllers.addIssue',
+  'issueTrackingSystem.controllers.editIssue',
   'issueTrackingSystem.version'
 ])
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider.otherwise({redirectTo: '/home'});
   }])
+  .controller('BaseController', [
+    '$scope',
+    function ($scope) {
+      $scope.loopData = function (Data) {
+        var result = "";
+          if(Data != undefined){
+            Data.forEach(function(element) {
+             result+= element.Name + ', ';
+            }, this);
+        }
+      }
+    }
+  ])
   .constant('BASE_URL', 'http://softuni-issue-tracker.azurewebsites.net/');

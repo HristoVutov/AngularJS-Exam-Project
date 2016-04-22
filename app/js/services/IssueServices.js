@@ -34,7 +34,8 @@ angular.module('issueTrackingSystem.services.issue', [])
             }
             
             function PostIssue(Data) {
-                
+                var deferred = $q.defer();
+                 
                 $http.post(BASE_URL + 'Issues', Data,
                      { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
                         .then(function (result) {
@@ -45,6 +46,35 @@ angular.module('issueTrackingSystem.services.issue', [])
                 
                 return deferred.promise;
             
+            }
+            
+            function EditIssue(Id, Data) {
+                var deferred = $q.defer();
+                 
+                $http.put(BASE_URL + 'Issues/' + Id, Data,
+                     { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
+                        .then(function (result) {
+                            deferred.resolve(result.data);
+                        },function (err) {
+                            deferred.reject(err);
+                        });
+                
+                return deferred.promise;
+            
+            }
+            
+            function ChangeStatus(Id, StatusId) {
+                var deferred = $q.defer();
+                 
+                $http.put(BASE_URL + 'Issues/' + Id + '/changestatus?statusid=' + StatusId,
+                     { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
+                        .then(function (result) {
+                            deferred.resolve(result.data);
+                        },function (err) {
+                            deferred.reject(err);
+                        });
+                
+                return deferred.promise;
             }
             
             function GetCommentsByIssueId(Id) {
@@ -64,8 +94,10 @@ angular.module('issueTrackingSystem.services.issue', [])
             return {
                 GetMyIssues: GetMyIssues,
                 PostIssue: PostIssue,
+                EditIssue: EditIssue,
                 GetIssueById: GetIssueById,
-                GetCommentsByIssueId: GetCommentsByIssueId
+                GetCommentsByIssueId: GetCommentsByIssueId,
+                ChangeStatus: ChangeStatus
             }
         }
     ]);

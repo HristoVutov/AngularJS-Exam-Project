@@ -43,6 +43,11 @@
                 <p>Labels: {{loopData(Issue.Labels)}}</p>      
         </div>
     </div>
+    <div class="col-xs-6">
+        <div ng-repeat="Status in Issue.AvailableStatuses">
+         ----{{Status.Name}}<input  ng-click="ChangeStatus(Status.Id)" class="btn btn-success" ng-disabled="CurrentUserId!=Issue.Author.Id && CurrentUserId!=Issue.Assignee.Id" type="button" value="Change">
+        </div>
+    </div>
     
     <div>
         <div class="col-xs-1"></div>

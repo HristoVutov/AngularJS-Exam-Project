@@ -4,8 +4,8 @@ angular.module('issueTrackingSystem.controllers.register', [
     'issueTrackingSystem.services.auth'
 ])
     .config(['$routeProvider', function($routeProvider){
-        $routeProvider.when('/register', {
-            templateUrl: 'app/templates/register.html',
+        $routeProvider.when('/', {
+            templateUrl: 'app/templates/loginRegister.html',
             controller: 'RegisterController'
         })
     }])

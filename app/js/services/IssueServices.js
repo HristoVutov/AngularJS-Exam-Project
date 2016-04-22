@@ -66,7 +66,7 @@ angular.module('issueTrackingSystem.services.issue', [])
             function ChangeStatus(Id, StatusId) {
                 var deferred = $q.defer();
                  
-                $http.put(BASE_URL + 'Issues/' + Id + '/changestatus?statusid=' + StatusId,
+                $http.put(BASE_URL + 'issues/' + Id + '/changestatus?statusid=' + StatusId,
                      { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
                         .then(function (result) {
                             deferred.resolve(result.data);
@@ -91,13 +91,28 @@ angular.module('issueTrackingSystem.services.issue', [])
                 return deferred.promise;
             }
             
+            function AddComment(Id, Comment) {
+                  var deferred = $q.defer();
+                
+                $http.post(BASE_URL + 'Issues/' + Id + '/Comments', Comment,
+                     { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
+                        .then(function (result) {
+                            deferred.resolve(result.data);
+                        },function (err) {
+                            deferred.reject(err);
+                        })
+                
+                return deferred.promise;
+            }
+            
             return {
                 GetMyIssues: GetMyIssues,
                 PostIssue: PostIssue,
                 EditIssue: EditIssue,
                 GetIssueById: GetIssueById,
                 GetCommentsByIssueId: GetCommentsByIssueId,
-                ChangeStatus: ChangeStatus
+                ChangeStatus: ChangeStatus,
+                AddComment: AddComment
             }
         }
     ]);

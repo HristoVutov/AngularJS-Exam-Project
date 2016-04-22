@@ -3,7 +3,8 @@
 angular.module('issueTrackingSystem.controllers.dashboard', [
     'issueTrackingSystem.services.project',
     'issueTrackingSystem.services.issue',
-    'issueTrackingSystem.filters.project'
+    'issueTrackingSystem.filters.project',
+    'issueTrackingSystem.services.auth', 
 ])
     .config(['$routeProvider', function($routeProvider){
         $routeProvider.when('/dashboard/:id', {
@@ -16,23 +17,24 @@ angular.module('issueTrackingSystem.controllers.dashboard', [
         '$routeParams',
         'ProjectServices',
         'IssueServices',
-        function DashboardController($scope, $routeParams, ProjectServices, IssueServices) {
+        'AuthServices',
+        function DashboardController($scope, $routeParams, ProjectServices, IssueServices, AuthServices) {
             var projectIdArray = [];
             var projects = [];
             $scope.Projects = [];
-            ProjectServices.GetAllProjects()
+            var currentUser = {};
+            
+            AuthServices.GetCurrentUser()
                 .then(function (success) {
-                    var projects = [];
-                    projects = success;
-                    projects = projects.filter(isCurrentUsersProject)
-                    $scope.Projects = projects;
-                    console.log(success);
+                    currentUser = success;
+                })
+            
+            ProjectServices.GetProjectByLeadId(currentUser.Id)
+                .then(function (success) {
+                    $scope.Projects.push(success);
                 });
             
-            function isCurrentUsersProject(element) {
-                var result = element.Lead.Username == sessionStorage['CurrentUser'];
-                return result;
-            }
+           
             
             IssueServices.GetMyIssues($routeParams.id)
                 .then(function(success){

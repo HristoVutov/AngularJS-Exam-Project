@@ -63,13 +63,29 @@ angular.module('issueTrackingSystem.services.auth', [])
                  return deferred.promise;     
             }
             
+            function ChangePassword(User) {
+                
+                 var deferred = $q.defer();                
+                     
+                $http.post(BASE_URL + 'api/Account/ChangePassword', User ,
+                     { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
+                        .then(function (result) {
+                            deferred.resolve(result.data);
+                        },function (err) {
+                            deferred.reject(err);
+                        })
+                        
+                 return deferred.promise;     
+            }
+            
             
             
             return {
                 Register: Register,
                 Login: Login,
                 GetCurrentUser: GetCurrentUser,
-                GetAllUsers: GetAllUsers
+                GetAllUsers: GetAllUsers,
+                ChangePassword: ChangePassword
             }
         }
     ]);

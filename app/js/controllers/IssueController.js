@@ -22,6 +22,7 @@ angular.module('issueTrackingSystem.controllers.issue', [
                 IssueServices.GetIssueById($routeParams.id)
                     .then(function (success) {
                         $scope.Issue = success;
+                        console.log(success);
                     });
                     
                     
@@ -44,18 +45,26 @@ angular.module('issueTrackingSystem.controllers.issue', [
                 $scope.ChangeStatus = function (StatusId) {
                     IssueServices.ChangeStatus($routeParams.id, StatusId)
                 }
+                
+                $scope.AddComment = function (Comment) {
+                    var obj = {
+                        Text: Comment
+                    }
+                    IssueServices.AddComment($routeParams.id, obj);                     
+                }
+                    
                     
                 $scope.loopData = function (Data) {
-                var result = "";
-                if(Data != undefined){
-                    Data.forEach(function(element) {
-                        result+= element.Name + ', ';
-                    }, this);
-                }
-                
-                result = result.substr(0, result.length-2);
-                return result;
-            }  
+                    var result = "";
+                    if(Data != undefined){
+                        Data.forEach(function(element) {
+                            result+= element.Name + ', ';
+                        }, this);
+                    }
+                    
+                    result = result.substr(0, result.length-2);
+                    return result;
+                }  
         }]
     );
 
@@ -144,8 +153,7 @@ angular.module('issueTrackingSystem.controllers.addIssue', [
 angular.module('issueTrackingSystem.controllers.editIssue', [
     'issueTrackingSystem.services.issue',
     'issueTrackingSystem.services.auth',    
-    'issueTrackingSystem.services.project',
-    'issueTrackingSystem.directives.basic'
+    'issueTrackingSystem.services.project'
 ])
     .config(['$routeProvider', function($routeProvider){
         $routeProvider.when('/issue/:id/edit', {

@@ -33,6 +33,20 @@ angular.module('issueTrackingSystem.services.project', [])
                 return deferred.promise;
             }
             
+            function GetProjectByLeadId(LeadId) {                
+                var deferred = $q.defer();
+                
+                $http.get(BASE_URL + 'projects?filter=Lead.Id="' + LeadId + '"&pageSize=50&pageNumber=1', 
+                     { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
+                        .then(function (result) {
+                            deferred.resolve(result.data);
+                        },function (err) {
+                            deferred.reject(err);
+                        })
+                
+                return deferred.promise;
+            }
+            
             function GetIssuesByProjectId(Id) {
                  var deferred = $q.defer();
                 
@@ -66,7 +80,8 @@ angular.module('issueTrackingSystem.services.project', [])
                 GetAllProjects: GetAllProjects,
                 GetProjectById: GetProjectById,
                 GetIssuesByProjectId: GetIssuesByProjectId,
-                EditProjectById: EditProjectById
+                EditProjectById: EditProjectById,
+                GetProjectByLeadId: GetProjectByLeadId
             }
         }
     ]);

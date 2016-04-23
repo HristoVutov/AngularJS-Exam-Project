@@ -61,9 +61,24 @@ angular.module('issueTrackingSystem.services.project', [])
                 return deferred.promise;
             }
             
-            function EditProjectById(Id, Data) {
+            function EditProjectById(Id, Data) {                
+                var deferred = $q.defer();
                 
                 $http.put(BASE_URL + 'Projects/' + Id, Data,
+                     { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
+                        .then(function (result) {
+                            deferred.resolve(result.data);
+                        },function (err) {
+                            deferred.reject(err);
+                        })
+                
+                return deferred.promise;
+            }
+            
+             function CreateProject(Data) {
+                var deferred = $q.defer();
+                
+                $http.post(BASE_URL + 'Projects', Data,
                      { headers: {'Authorization': sessionStorage['TokenType'] + " " + sessionStorage['AccessToken']}})
                         .then(function (result) {
                             deferred.resolve(result.data);
@@ -81,7 +96,8 @@ angular.module('issueTrackingSystem.services.project', [])
                 GetProjectById: GetProjectById,
                 GetIssuesByProjectId: GetIssuesByProjectId,
                 EditProjectById: EditProjectById,
-                GetProjectByLeadId: GetProjectByLeadId
+                GetProjectByLeadId: GetProjectByLeadId,
+                CreateProject: CreateProject
             }
         }
     ]);

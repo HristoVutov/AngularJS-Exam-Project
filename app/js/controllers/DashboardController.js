@@ -15,10 +15,11 @@ angular.module('issueTrackingSystem.controllers.dashboard', [
     .controller('DashboardController', [
         '$scope',
         '$routeParams',
+        '$location',
         'ProjectServices',
         'IssueServices',
         'AuthServices',
-        function DashboardController($scope, $routeParams, ProjectServices, IssueServices, AuthServices) {
+        function DashboardController($scope, $routeParams, $location, ProjectServices, IssueServices, AuthServices) {
             var projectIdArray = [];
             var projects = [];
             $scope.Projects = [];
@@ -26,13 +27,24 @@ angular.module('issueTrackingSystem.controllers.dashboard', [
             
             AuthServices.GetCurrentUser()
                 .then(function (success) {
-                    currentUser = success;
+                    $scope.currentUser = success;
+                   ProjectServices.GetProjectByLeadId($scope.currentUser.Id)
+                    .then(function (projectSuccess) {
+                        projectSuccess.Projects.forEach(function(element) {
+                            if (projectIdArray.indexOf(element.Id) < 0) {
+                                projectIdArray.push(element.Id);
+                                $scope.Projects.push(element);
+                            }
+                        }, this);
+                        $scope.Projects.push(projectSuccess.Projects);
+                    }, function (error) {
+                        
+                    });
+                }, function (error) {         
+                         $location.path('/');
                 })
             
-            ProjectServices.GetProjectByLeadId(currentUser.Id)
-                .then(function (success) {
-                    $scope.Projects.push(success);
-                });
+            
             
            
             

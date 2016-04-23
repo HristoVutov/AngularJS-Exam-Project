@@ -11,8 +11,11 @@ angular.module('issueTrackingSystem.controllers.register', [
     }])
     .controller('RegisterController', [
         '$scope',
+        '$location',
         'AuthServices',
-        function RegisterController($scope, AuthServices) {
+        function RegisterController($scope, $location, AuthServices) {
+            
+                
             $scope.register = function (user) {
                 AuthServices.Register(user)
                 .then(function (user) {

@@ -40,6 +40,8 @@ angular.module('issueTrackingSystem.controllers.issue', [
                 AuthServices.GetCurrentUser()
                 .then(function (success) {
                     $scope.CurrentUserId = success.Id;
+                }, function (error) {
+                    $window.location.href = '/#/';
                 });
                 
                 $scope.ChangeStatus = function (StatusId) {
@@ -172,7 +174,9 @@ angular.module('issueTrackingSystem.controllers.editIssue', [
             AuthServices.GetCurrentUser()
                 .then(function (success) {
                     $scope.CurrentUser = success;
-                })
+                }, function (error) {
+                    $window.location.href = '/#/';
+                });
             
             IssueServices.GetIssueById($routeParams.id)
                 .then(function (success) {

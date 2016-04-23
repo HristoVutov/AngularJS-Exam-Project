@@ -14,7 +14,8 @@ angular.module('issueTrackingSystem.controllers.login', [
         'AuthServices', 
         'notify',     
         '$location',  
-        function LoginController($scope, AuthServices, notify, $location) {
+        function LoginController($scope, AuthServices, notify, $location) {           
+            
             $scope.login = function(User){
                 User.grant_type = 'password';
                 AuthServices.Login(User)

@@ -24,7 +24,7 @@ angular.module('issueTrackingSystem.directive.auth', [
             .then(function (success) {
               if(success.isAdmin){
                   $(elm).append('<li role="presentation"><a href="#/projects">Projects</a></li>');
-                  $(elm).append('<li role="presentation"><a href="#/project/add">Add Project</a></li>');                  
+                  $(elm).append('<li role="presentation"><a href="#/projects/add">Add Project</a></li>');                  
               }        
             }, function (error) {
             });      

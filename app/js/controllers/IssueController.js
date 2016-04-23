@@ -169,12 +169,21 @@ angular.module('issueTrackingSystem.controllers.editIssue', [
         'AuthServices',
         'ProjectServices',
         function EditIssueController($scope, $routeParams, $window, IssueServices, AuthServices, ProjectServices){
+            AuthServices.GetCurrentUser()
+                .then(function (success) {
+                    $scope.CurrentUser = success;
+                })
+            
             IssueServices.GetIssueById($routeParams.id)
                 .then(function (success) {
                     $scope.Issue = success;
-                    console.log(success);
-                    
-                                $scope.Issue.LabelsAsString = $scope.loopData(success.Labels);    
+                    if(success.Author.Id == $scope.CurrentUser.Id || $scope.CurrentUser.isAdmin){
+                      
+                    }else{
+                        $window.location.href = '/#/issue/' + $routeParams.id;
+                    }
+                        
+                        $scope.Issue.LabelsAsString = $scope.loopData(success.Labels);    
                         ProjectServices.GetProjectById($scope.Issue.Project.Id)
                             .then(function (projectSuccess) {
                                 $scope.Project = projectSuccess;            

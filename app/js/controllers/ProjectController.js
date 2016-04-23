@@ -16,9 +16,7 @@ angular.module('issueTrackingSystem.controllers.project', [
         '$window',
         'ProjectServices',
         'AuthServices',
-        function ProjectController($scope, $routeParams, $window, ProjectServices, AuthServices) {            
-            
-            
+        function ProjectController($scope, $routeParams, $window, ProjectServices, AuthServices) {  
             AuthServices.GetCurrentUser()
                 .then(function (success) {
                     $scope.CurrentUserId = success.Id;
@@ -27,7 +25,6 @@ angular.module('issueTrackingSystem.controllers.project', [
             ProjectServices.GetProjectById($routeParams.id)
                 .then(function(success){
                     $scope.Project = success;
-                    console.log(success);
                 });
             
             ProjectServices.GetIssuesByProjectId($routeParams.id)
@@ -73,7 +70,7 @@ angular.module('issueTrackingSystem.controllers.editProject', [
         function EditProjectController($scope, $routeParams, $window, ProjectServices, IssueServices, AuthServices){
             AuthServices.GetCurrentUser()
                 .then(function (success) {
-                    $scope.CurrentUserId = success.Id;
+                    $scope.CurrentUser = success;
                 });
             
             AuthServices.GetAllUsers()
@@ -86,8 +83,10 @@ angular.module('issueTrackingSystem.controllers.editProject', [
                     $scope.Project = success;
                     $scope.Priorities = $scope.loopData(success.Priorities);
                     $scope.Labels = $scope.loopData(success.Labels);
-                    if(success.Lead.Id != $scope.CurrentUserId){
-                      $window.location.href = '/#/project/' + $routeParams.id;
+                    if(success.Lead.Id == $scope.CurrentUser.Id || $scope.CurrentUser.isAdmin){
+                      
+                    }else{
+                        $window.location.href = '/#/project/' + $routeParams.id;
                     }
                 });
                 
@@ -134,3 +133,38 @@ angular.module('issueTrackingSystem.controllers.editProject', [
             
         }
     ])
+    
+
+angular.module('issueTrackingSystem.controllers.projects', [
+    'issueTrackingSystem.services.project',
+    'issueTrackingSystem.services.auth'
+])
+    .config(['$routeProvider', function($routeProvider){
+        $routeProvider.when('/projects', {
+            templateUrl: 'app/templates/projects.html',
+            controller: 'ProjectsController'
+        })
+    }])
+    .controller('ProjectsController', [
+        '$scope',
+        '$location',
+        'ProjectServices',
+        'AuthServices',
+        function ProjectsController($scope, $location, ProjectServices, AuthServices) {
+            AuthServices.GetCurrentUser()
+                .then(function (success) {
+                    if(!success.isAdmin){
+                        $location.path('/dashboard');
+                    }
+                });
+                
+            ProjectServices.GetAllProjects()
+                .then(function (success) {
+                    $scope.Projects = success;
+                });
+                
+            $scope.Redirect = function (redirectTo) {
+                $location.path(redirectTo);
+            }
+        }
+    ]);

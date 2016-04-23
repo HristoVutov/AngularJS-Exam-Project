@@ -8,6 +8,7 @@ angular.module('issueTrackingSystem', [
   'issueTrackingSystem.controllers.logout',
   'issueTrackingSystem.controllers.register',  
   'issueTrackingSystem.controllers.project',
+  'issueTrackingSystem.controllers.projects',
   'issueTrackingSystem.controllers.editProject',
   'issueTrackingSystem.controllers.dashboard',  
   'issueTrackingSystem.controllers.issue',
@@ -21,8 +22,8 @@ angular.module('issueTrackingSystem', [
   .config(['$routeProvider', function($routeProvider) {    
       $routeProvider.otherwise({redirectTo: '/'});           
   }])
-  .constant('BASE_URL', 'http://softuni-issue-tracker.azurewebsites.net/');
-
+  .constant('BASE_URL', 'http://softuni-issue-tracker.azurewebsites.net/')  ;
+  
 
 
 
